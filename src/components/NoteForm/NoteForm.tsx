@@ -17,21 +17,23 @@ const initialValues: FormikValues = {
     tag: ''
 }
 
-interface onCloseProps {
+interface NoteFormProps {
     onClose: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const OrderFormSchema = Yup.object().shape({
     title: Yup.string()
-        .min(3, "Title must be at least 2 characters")
-        .max(30, "Title is too long")
+        .min(3, "Title must be at least 3 characters")
+        .max(50, "Title is too long")
         .required("Title is required"),
     content: Yup.string()
         .max(500),
-    tag: Yup.string().required("Please choose a tag"),
+    tag: Yup.string()
+        .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shoping'])
+        .required("Please choose a tag"),
 })
 
-export default function NoteForm({ onClose }: onCloseProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
     const queryClient = useQueryClient()
     const mutation = useMutation({
         mutationFn: (values: FormikValues) => createNote(values),
@@ -58,7 +60,7 @@ export default function NoteForm({ onClose }: onCloseProps) {
                 <div className={css.formGroup}>
                     <label htmlFor="title">Title</label>
                     <Field id="title" type="text" name="title" className={css.input} />
-                    <ErrorMessage name="title" className={css.error} />
+                    <ErrorMessage name="title" className={css.error} component='div' />
                 </div>
 
                 <div className={css.formGroup}>

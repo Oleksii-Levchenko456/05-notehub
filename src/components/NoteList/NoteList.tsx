@@ -1,10 +1,10 @@
 import css from './NoteList.module.css'
-import type { FetchNotesResponse } from '../../services/noteService'
+import type { Note } from '../../types/note'
 import { deleteNote } from '../../services/noteService'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface NoteListProps {
-    data?: FetchNotesResponse
+    data?: Note[]
 }
 
 export default function NoteList({ data }: NoteListProps) {
@@ -18,7 +18,7 @@ export default function NoteList({ data }: NoteListProps) {
 
     return (
         <ul className={css.list}>
-            {data?.notes.map(note => (
+            {data?.map(note => (
                 <li key={note.id} className={css.listItem}>
                     <h2 className={css.title}>{note.title}</h2>
                     <p className={css.content}>{note.content}</p>
