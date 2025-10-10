@@ -29,7 +29,6 @@ export default function App() {
     useEffect(() => {
         setPage(1)
     }, [inputValue])
-    // тут прослуховування Page
 
     const { data, isFetching, } = useQuery({
         queryKey: ['notes', page, searchValue],
@@ -49,12 +48,9 @@ export default function App() {
                 <Modal onClose={closeModal}>
                     <NoteForm onClose={closeModal} />
                 </Modal>)}
-            {/* {data?.notes.length !== 0 ? <NoteList data={data?.notes} /> : <p>Empty...</p>
-            } */}
             {data?.notes?.length
                 ? <NoteList notes={data.notes} />
                 : <p>Empty...</p>}
-            {/* {data === 0 && <p>Empty...</p>} */}
 
         </div>
 
