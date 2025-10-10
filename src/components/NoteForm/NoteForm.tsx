@@ -29,7 +29,7 @@ const OrderFormSchema = Yup.object().shape({
     content: Yup.string()
         .max(500),
     tag: Yup.string()
-        .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shoping'])
+        .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'])
         .required("Please choose a tag"),
 })
 
@@ -61,6 +61,8 @@ export default function NoteForm({ onClose }: NoteFormProps) {
                     <label htmlFor="title">Title</label>
                     <Field id="title" type="text" name="title" className={css.input} />
                     <ErrorMessage name="title" className={css.error} component='div' />
+                    <ErrorMessage name="select" className={css.error} component='div' />
+                    <ErrorMessage name="tag" className={css.error} component='div' />
                 </div>
 
                 <div className={css.formGroup}>

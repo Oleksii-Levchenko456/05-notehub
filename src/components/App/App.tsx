@@ -13,8 +13,14 @@ export default function App() {
     const [page, setPage] = useState(1)
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [searchValue, setSearchValue] = useState('')
+    const [inputValue, setInputValue] = useState('')
 
-    const handleSearch = useDebouncedCallback((e: React.ChangeEvent<HTMLInputElement>) => { setSearchValue(e.target.value) }, 700)
+    const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setInputValue(value)
+        handleSearch(value)
+    }
+    const handleSearch = useDebouncedCallback((value) => { setSearchValue(value) }, 700)
 
     const closeModal = () => {
         setIsOpenModal(false)
@@ -22,7 +28,7 @@ export default function App() {
 
     useEffect(() => {
         setPage(1)
-    }, [searchValue])
+    }, [inputValue])
     // тут прослуховування Page
 
     const { data, isFetching, } = useQuery({
@@ -34,7 +40,7 @@ export default function App() {
         <div className={css.app}>
             <header className={css.toolbar}>
 
-                <SearchBox value={searchValue} onChange={handleSearch} />
+                <SearchBox value={inputValue} onChange={handleInputValue} />
                 {data && data.totalPages > 1 && <Pagination totalPages={data.totalPages} page={page} setPage={setPage} />}
                 <button className={css.button} onClick={() => { setIsOpenModal(true) }}>Create note +</button>
             </header>
@@ -43,8 +49,13 @@ export default function App() {
                 <Modal onClose={closeModal}>
                     <NoteForm onClose={closeModal} />
                 </Modal>)}
-            {data?.notes.length !== 0 ? <NoteList data={data?.notes} /> : <p>Empty...</p>
-            }
+            {/* {data?.notes.length !== 0 ? <NoteList data={data?.notes} /> : <p>Empty...</p>
+            } */}
+            {data?.notes?.length
+                ? <NoteList notes={data.notes} />
+                : <p>Empty...</p>}
+            {/* {data === 0 && <p>Empty...</p>} */}
+
         </div>
 
     )
